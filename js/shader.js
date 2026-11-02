@@ -1,5 +1,5 @@
 /**
- * ShaderProgram (OOP)
+ * ShaderProgram
  * Mengelola kompilasi, linking shader, serta mapping uniform & attribute.
  */
 class ShaderProgram {

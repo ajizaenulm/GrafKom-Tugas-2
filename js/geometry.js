@@ -1,5 +1,5 @@
 /**
- * Geometry & GeometryFactory (OOP)
+ * Geometry & GeometryFactory
  * Mengelola Vertex Buffer Objects (VBO) & Index Buffer Objects (IBO)
  * serta menyediakan pembuatan bentuk 3D parametrik: Box, Piramida/Limasan, Silinder, dan Plane.
  */

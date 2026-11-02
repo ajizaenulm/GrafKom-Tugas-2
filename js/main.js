@@ -1,6 +1,6 @@
 /**
- * App (OOP) - Main Application Controller
- * Menggabungkan seluruh komponen OOP: Shader, Camera, Scene Graph, Objects,
+ * App - Main Application Controller
+ * Menggabungkan seluruh komponen: Shader, Camera, Scene Graph, Objects,
  * Lighting, dan Animation Loop.
  */
 

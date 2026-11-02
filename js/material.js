@@ -1,5 +1,5 @@
 /**
- * Material & Texture (OOP)
+ * Material & Texture
  * Mengelola tekstur WebGL serta sifat permukaan material (warna, specular, shininess)
  */
 class Texture {

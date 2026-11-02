@@ -1,5 +1,5 @@
 /**
- * SceneNode - Inti dari Hierarchical Modelling (OOP)
+ * SceneNode - Inti dari Hierarchical Modelling
  * Membangun relasi pohon (Parent - Child). Perubahan posisi/rotasi/skala
  * pada Parent secara matematis diturunkan ke seluruh Child nodes.
  */

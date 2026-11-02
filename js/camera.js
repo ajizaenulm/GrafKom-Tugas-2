@@ -1,5 +1,5 @@
 /**
- * Camera & OrbitCameraController (OOP)
+ * Camera & OrbitCameraController
  * Mengelola matriks proyeksi perspektif, matriks view (lookAt),
  * interaksi mouse pengguna, serta sudut pandang kamera preset.
  */

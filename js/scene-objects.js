@@ -1,5 +1,5 @@
 /**
- * Scene Objects (OOP)
+ * Scene Objects
  * Pemodelan 3D Presisi Gedung Rektorat & Kolam Refleksi ITS
  * Sesuai foto dan video asli observasi lapangan.
  */
