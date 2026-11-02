@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tugas 2 Grafika Komputer - Scene 3D Gedung Rektorat & Kolam Air Mancur ITS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- HEADER: Informasi Kelompok & Tugas -->
+  <header class="header-container">
+    <div class="team-card">
+      <div class="team-meta">
+        <ul>
+          <li><strong>Nama Anggota 1:</strong> Aji Zaenul Musthofa (NRP: 5025241065)</li>
+          <li><strong>Nama Anggota 2:</strong> Raden Kurniawan Agung Fitrianto (NRP: 5025241104)</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    
+    <!-- SECTION 1: KOMPARASI WEBGL CANVAS & FOTO OBJEK ASLI (Side by Side) -->
+    <section class="comparison-section">
+      <div class="comparison-grid">
+        <!-- Canvas WebGL 3D -->
+        <div class="card canvas-card">
+          <div class="card-header">
+            <h3>Canvas 3D (WebGL)</h3>
+          </div>
+          <div class="canvas-wrapper">
+            <canvas id="webgl-canvas" width="640" height="480"></canvas>
+          </div>
+          <div class="controls-info">
+            <p><strong>Kontrol Kamera:</strong> Klik & Drag mouse untuk memutar sudut pandang, Scroll mouse untuk Zoom in/out.</p>
+            
+            <div class="interactive-btns">
+              <button id="btn-toggle-anim" class="btn">Pause Animasi</button>
+              <button id="btn-toggle-light" class="btn">Mode Malam</button>
+              <button id="btn-reset-cam" class="btn">Reset Kamera</button>
+            </div>
+
+            <div class="preset-btns">
+              <span><strong>Preset Sudut Pandang:</strong></span>
+              <button id="btn-preset-photo" class="btn btn-secondary">Sudut Pandang Foto Asli</button>
+              <button id="btn-preset-overview" class="btn btn-secondary">Perspektif Luas</button>
+              <button id="btn-preset-top" class="btn btn-secondary">Tampak Atas</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Foto Objek Asli -->
+        <div class="card real-card">
+          <div class="card-header">
+            <h3>Foto Objek Asli (Gedung Rektorat & Kolam ITS)</h3>
+          </div>
+          <div class="image-wrapper">
+            <img id="real-photo" src="assets/images/real-object.jpg" alt="Foto Asli Gedung Rektorat dan Kolam Air Mancur ITS">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: VIDEO OBJEK ASLI & DESAIN HIERARCHICAL TREE -->
+    <section class="details-grid">
+      
+      <!-- Video Objek Asli -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Video Rekaman Objek Asli</h3>
+        </div>
+        <div class="video-wrapper">
+          <video controls autoplay loop muted playsinline>
+            <source src="assets/videos/real-object.mp4" type="video/mp4">
+            Browser Anda tidak mendukung tag video. Silakan buka file di <code>assets/videos/real-object.mp4</code>.
+          </video>
+        </div>
+      </div>
+
+      <!-- Desain Tree Hierarki Antar Objek -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Desain Tree Hubungan Antar Objek (Hierarchical Modelling)</h3>
+        </div>
+        <div class="tree-wrapper">
+          <img id="tree-diagram" src="assets/images/scene-tree.png" alt="Diagram Tree Hierarki Objek 3D Rektorat ITS">
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- WebGL OOP Scripts (Urutan Sesuai Dependency) -->
+  <script src="js/gl-matrix.js"></script>
+  <script src="js/geometry.js"></script>
+  <script src="js/material.js"></script>
+  <script src="js/shader.js"></script>
+  <script src="js/scene-graph.js"></script>
+  <script src="js/camera.js"></script>
+  <script src="js/scene-objects.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
