@@ -584,7 +584,6 @@ class RektoratSignOnWalkway extends SceneNode {
   buildDetailed3DSign() {
     const gl = this.gl;
     const mats = this.materials;
-    console.log(this)
 
     this.setScale(0.35, 0.35, 0.35);
 
@@ -721,11 +720,11 @@ class SedanCar extends SceneNode {
     this.setRotation(0, yawAngle, 0);
 
     // Animasi putaran roda saat mobil berjalan
-    for (let i = 0; i < this.wheels.length; i++) {
-      const wheel = this.wheels[i];
-      const currentRot = wheel.rotation;
-      wheel.setRotation(currentRot[0] + deltaTime * 8.0, currentRot[1], currentRot[2]);
-    }
+    // for (let i = 0; i < this.wheels.length; i++) {
+    //   const wheel = this.wheels[i];
+    //   const currentRot = wheel.rotation;
+    //   wheel.setRotation(currentRot[0] + deltaTime * 8.0, currentRot[1], currentRot[2]);
+    // }
   }
 }
 

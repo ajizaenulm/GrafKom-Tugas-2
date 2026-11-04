@@ -7,12 +7,16 @@
 ## Pembagian Tugas
 
 | No | Komponen / Rincian Tugas | Anggota Penanggung Jawab |
-|:---:|---|---|
-| 1 | **Pemodelan Objek 3D:** Membangun bentuk 3D Gedung Rektorat ITS (blok gedung utama, sayap kiri-kanan, pilar fasad, lobby kaca, serta atap limasan bertingkat dengan puncak piramida segitiga). | `[ ... ]` |
-| 2 | **Hierarchical Modelling:** Menyusun relasi *parent-child* pada *Scene Graph* sehingga seluruh transformasi matriks anak mewarisi posisi dan orientasi induknya. | `[ ... ]` |
-| 3 | **Animasi 3D:** Mengimplementasikan animasi dinamis pada *child nodes* (kibaran bendera merah putih berosilasi dan semburan vertikal air mancur). | `[ ... ]` |
-| 4 | **Dokumentasi Lapangan:** Mengambil dan menyiapkan foto serta video rekaman observasi asli Gedung Rektorat dan kolam refleksi ITS. | `[ ... ]` |
-| 5 | **Sistem Pencahayaan (Lighting):** Mengembangkan GLSL *vertex & fragment shaders* dengan model pencahayaan *Phong Reflection* (komponen Ambient, Diffuse/Lambertian, dan Specular) serta mode siang dan malam. | `[ ... ]` |
-| 6 | **Pemetaan Tekstur (Texture Mapping):** Menerapkan *multi-texture mapping* pada gedung, air kolam, genteng, dan plang Logo ITS, serta menangani koreksi orientasi UV (`UNPACK_FLIP_Y_WEBGL`). | `[ ... ]` |
-| 7 | **Kamera Interaktif:** Mengembangkan *Orbit Camera Controller* dengan kontrol mouse (drag rotasi 360° dan scroll zoom), serta tombol preset sudut pandang foto asli. | `[ ... ]` |
-| 8 | **Antarmuka Web & Scene Tree:** Merancang tata letak web responsif berdampingan (*side-by-side*) dan membuat diagram pohon hubungan hierarki objek (*Scene Tree*). | `[ ... ]` |
+| --- | --- | --- |
+| 1a | **Pemodelan Objek 3D dan Hirarki:** `RektoratBuilding`, `MainCenterBody`, `LeftWing`, `RightWing`, `LobbyGlass`, `SignBoard`, `LowerTieredRoof`, `AtticWall`, `UpperTieredRoof`, `FlagPoleSystem`, `PoleShaft`, `GoldFinial`, `FlagMesh`, `FountainSystem`, `WaterSurface`, `LeftRim`, `RightRim`, `FrontRim`, `BackRim`, `Rock_${i}`, `WaterJet_${this.waterJets.length}`, `Environment`, `GrassGround`, `Tree`, `Trunk`, `FoliageLower`, `FoliageUpper` | Aji |
+| 1b | **Pemodelan Objek 3D dan Hirarki:** `LeftRoof`, `RightRoof`, `FrontPorchRoof`, `PorchCeiling`, `Pillar_${p}_${i}`, `RektoratSign` (porchSign), `RoadSystem`, `FrontPorchRoad`, `OuterPoolRoad`, `SideRoadLeft`, `SideRoadRight`, `RektoratSign`, `RektoratSignOnWalkway`, `SignBaseWall`, `ConnectingWalkway`, `MainWalkway`, `SedanCar`, `BodyLower`, `Cabin`, `Wheel_${i}`, `Tire_${i}` | Agung |
+| 2a | **Animasi 3D:** `FlagPoleSystem` (FlagMesh / Bendera Merah Putih), `FountainSystem` (WaterSurface & WaterJet) | Aji |
+| 2b | **Animasi 3D:** `SedanCar` | Agung |
+| 3a | **Dokumentasi Lapangan Foto:** Mengambil dan menyiapkan foto asli Gedung Rektorat dan kolam refleksi ITS. | Aji |
+| 3b | **Dokumentasi Lapangan Video:** Mengambil dan menyiapkan video rekaman observasi asli Gedung Rektorat dan kolam refleksi ITS. | Agung |
+| 4 | **Sistem Pencahayaan (Lighting):** Mengembangkan GLSL *vertex & fragment shaders* dengan model pencahayaan *Phong Reflection* (komponen Ambient, Diffuse/Lambertian, dan Specular) serta mode siang dan malam. | Aji |
+| 5 | **Pemetaan Tekstur (Texture Mapping):** Menerapkan *multi-texture mapping* pada gedung, air kolam, genteng, dan plang Logo ITS, serta menangani koreksi orientasi UV (`UNPACK_FLIP_Y_WEBGL`). | Aji |
+| 6 | **Kamera Interaktif:** Mengembangkan *Orbit Camera Controller* dengan kontrol mouse (drag rotasi 360° dan scroll zoom), serta tombol preset sudut pandang foto asli. | Aji |
+| 7 | **Antarmuka Web:** Merancang tata letak web responsif berdampingan (*side-by-side*). | Aji |
+| 8 | **Scene Tree:** Membuat diagram pohon hubungan hierarki objek (*Scene Tree*). | Agung |
+| 9 | **Keyboard Shortcuts & Kontrol Navigasi:** Mengimplementasikan interaksi kendali kamera tingkat lanjut melalui tombol keyboard meliputi navigasi gerak (`WASD`), rotasi tatapan (`IJKL`), kontrol ketinggian vertikal (`Space`/`Shift`), serta shortcut penyelarasan orientasi sumbu (`X`, `Y`, `Z`). | Agung |

@@ -55,9 +55,10 @@ class OrbitCameraController extends Camera {
 
     this.eye = [0, 0, 0];
 
-    // Status tombol WASD dan Space/Shift
-    this.keys = { w: false, a: false, s: false, d: false, space: false, shift: false };
+    // Status tombol WASD, IJKL, dan Space/Shift
+    this.keys = { w: false, a: false, s: false, d: false, i: false, j: false, k: false, l: false, space: false, shift: false };
     this.moveSpeed = 15.0; // Kecepatan gerak WASD
+    this.lookSpeed = 1.5;  // Kecepatan rotasi tatapan IJKL
     this.lastTime = performance.now();
 
     this.setupEventListeners();
@@ -100,13 +101,17 @@ class OrbitCameraController extends Camera {
       this.updateViewMatrix();
     }, { passive: false });
 
-    // Listener untuk WASD, Space, Shift dan shortcut sumbu X, Y, Z
+    // Listener untuk WASD, IJKL, Space, Shift dan shortcut sumbu X, Y, Z
     window.addEventListener('keydown', (e) => {
       const k = e.key.toLowerCase();
       if (k === 'w') this.keys.w = true;
       if (k === 'a') this.keys.a = true;
       if (k === 's') this.keys.s = true;
       if (k === 'd') this.keys.d = true;
+      if (k === 'i') this.keys.i = true;
+      if (k === 'j') this.keys.j = true;
+      if (k === 'k') this.keys.k = true;
+      if (k === 'l') this.keys.l = true;
       if (e.code === 'Space') {
         e.preventDefault();
         this.keys.space = true;
@@ -135,6 +140,10 @@ class OrbitCameraController extends Camera {
       if (k === 'a') this.keys.a = false;
       if (k === 's') this.keys.s = false;
       if (k === 'd') this.keys.d = false;
+      if (k === 'i') this.keys.i = false;
+      if (k === 'j') this.keys.j = false;
+      if (k === 'k') this.keys.k = false;
+      if (k === 'l') this.keys.l = false;
       if (e.code === 'Space') this.keys.space = false;
       if (e.key === 'Shift' || e.code === 'ShiftLeft' || e.code === 'ShiftRight') this.keys.shift = false;
     });
@@ -145,8 +154,23 @@ class OrbitCameraController extends Camera {
       const deltaTime = (currentTime - this.lastTime) / 1000;
       this.lastTime = currentTime;
 
+      let needsUpdate = false;
+
+      // Penanganan rotasi tatapan kamera (IJKL)
+      if (this.keys.i || this.keys.k || this.keys.j || this.keys.l) {
+        if (this.keys.i) this.pitch -= this.lookSpeed * deltaTime;
+        if (this.keys.k) this.pitch += this.lookSpeed * deltaTime;
+        if (this.keys.j) this.yaw += this.lookSpeed * deltaTime;
+        if (this.keys.l) this.yaw -= this.lookSpeed * deltaTime;
+
+        // Batasi pitch agar kamera tidak jungkir balik
+        const limit = Math.PI / 2 - 0.05;
+        this.pitch = Math.max(-0.2, Math.min(limit, this.pitch));
+        needsUpdate = true;
+      }
+
+      // Penanganan posisi/gerak kamera (WASD & Space/Shift)
       if (this.keys.w || this.keys.s || this.keys.a || this.keys.d || this.keys.space || this.keys.shift) {
-        // Hitung arah maju/mundur (forward) dan kanan/kiri (right) berdasarkan yaw
         const forwardX = Math.sin(this.yaw);
         const forwardZ = Math.cos(this.yaw);
         const rightX = Math.sin(this.yaw - Math.PI / 2);
@@ -189,6 +213,10 @@ class OrbitCameraController extends Camera {
         this.target[0] += moveX * step;
         this.target[1] += moveY * step;
         this.target[2] += moveZ * step;
+        needsUpdate = true;
+      }
+
+      if (needsUpdate) {
         this.updateViewMatrix();
       }
 
