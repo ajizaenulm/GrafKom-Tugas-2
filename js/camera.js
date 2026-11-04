@@ -55,8 +55,14 @@ class OrbitCameraController extends Camera {
 
     this.eye = [0, 0, 0];
 
+    // Status tombol WASD dan Space/Shift
+    this.keys = { w: false, a: false, s: false, d: false, space: false, shift: false };
+    this.moveSpeed = 15.0; // Kecepatan gerak WASD
+    this.lastTime = performance.now();
+
     this.setupEventListeners();
     this.updateViewMatrix();
+    this.startUpdateLoop();
   }
 
   setupEventListeners() {
@@ -93,6 +99,105 @@ class OrbitCameraController extends Camera {
       this.distance = Math.max(5.0, Math.min(70.0, this.distance));
       this.updateViewMatrix();
     }, { passive: false });
+
+    // Listener untuk WASD, Space, Shift dan shortcut sumbu X, Y, Z
+    window.addEventListener('keydown', (e) => {
+      const k = e.key.toLowerCase();
+      if (k === 'w') this.keys.w = true;
+      if (k === 'a') this.keys.a = true;
+      if (k === 's') this.keys.s = true;
+      if (k === 'd') this.keys.d = true;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        this.keys.space = true;
+      }
+      if (e.key === 'Shift' || e.code === 'ShiftLeft' || e.code === 'ShiftRight') this.keys.shift = true;
+
+      // Shortcut X, Y, Z alignment
+      if (k === 'x') {
+        this.pitch = 0.0;
+        this.yaw = Math.PI / 2; // Menghadap sumbu X
+        this.updateViewMatrix();
+      } else if (k === 'y') {
+        this.pitch = Math.PI / 2 - 0.001; // Tampak atas (Top-down)
+        this.yaw = 0.0;
+        this.updateViewMatrix();
+      } else if (k === 'z') {
+        this.pitch = 0.0;
+        this.yaw = 0.0; // Menghadap sumbu Z
+        this.updateViewMatrix();
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      const k = e.key.toLowerCase();
+      if (k === 'w') this.keys.w = false;
+      if (k === 'a') this.keys.a = false;
+      if (k === 's') this.keys.s = false;
+      if (k === 'd') this.keys.d = false;
+      if (e.code === 'Space') this.keys.space = false;
+      if (e.key === 'Shift' || e.code === 'ShiftLeft' || e.code === 'ShiftRight') this.keys.shift = false;
+    });
+  }
+
+  startUpdateLoop() {
+    const update = (currentTime) => {
+      const deltaTime = (currentTime - this.lastTime) / 1000;
+      this.lastTime = currentTime;
+
+      if (this.keys.w || this.keys.s || this.keys.a || this.keys.d || this.keys.space || this.keys.shift) {
+        // Hitung arah maju/mundur (forward) dan kanan/kiri (right) berdasarkan yaw
+        const forwardX = Math.sin(this.yaw);
+        const forwardZ = Math.cos(this.yaw);
+        const rightX = Math.sin(this.yaw - Math.PI / 2);
+        const rightZ = Math.cos(this.yaw - Math.PI / 2);
+
+        let moveX = 0;
+        let moveY = 0;
+        let moveZ = 0;
+
+        if (this.keys.w) {
+          moveX -= forwardX;
+          moveZ -= forwardZ;
+        }
+        if (this.keys.s) {
+          moveX += forwardX;
+          moveZ += forwardZ;
+        }
+        if (this.keys.a) {
+          moveX += rightX;
+          moveZ += rightZ;
+        }
+        if (this.keys.d) {
+          moveX -= rightX;
+          moveZ -= rightZ;
+        }
+        if (this.keys.space) {
+          moveY += 1;
+        }
+        if (this.keys.shift) {
+          moveY -= 1;
+        }
+
+        const len = Math.hypot(moveX, moveZ);
+        if (len > 0) {
+          moveX /= len;
+          moveZ /= len;
+        }
+
+        const step = this.moveSpeed * deltaTime;
+        this.target[0] += moveX * step;
+        this.target[1] += moveY * step;
+        this.target[2] += moveZ * step;
+        this.updateViewMatrix();
+      }
+
+      requestAnimationFrame(update);
+    };
+    requestAnimationFrame((t) => {
+      this.lastTime = t;
+      update(t);
+    });
   }
 
   updateViewMatrix() {

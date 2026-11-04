@@ -97,6 +97,8 @@ class App {
     this.initCamera();
     this.initUI();
 
+    this.handleResize();
+
     // Jalankan render loop
     requestAnimationFrame(this.renderLoop.bind(this));
   }
@@ -105,8 +107,8 @@ class App {
     const gl = this.gl;
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LEQUAL);
-    gl.enable(gl.CULL_FACE);
-    gl.cullFace(gl.BACK);
+    // gl.enable(gl.CULL_FACE);
+    // gl.cullFace(gl.BACK);
   }
 
   initShader() {
@@ -131,6 +133,8 @@ class App {
       roof: new Material({ color: [1.0, 1.0, 1.0, 1.0], texture: texRoof, specularShininess: 24, specularIntensity: 0.3 }),
       facade: new Material({ color: [1.0, 1.0, 1.0, 1.0], texture: texFacade, specularShininess: 32, specularIntensity: 0.35 }),
       rektoratSign: new Material({ color: [1.0, 1.0, 1.0, 1.0], texture: texSign, specularShininess: 64, specularIntensity: 0.5 }),
+      canopySign: new Material({ color: [0.85, 0.65, 0.1, 1.0], specularShininess: 64, specularIntensity: 0.6 }),
+      walkwaySign: new Material({ color: [0.6, 0.6, 0.6, 1.0], specularShininess: 32, specularIntensity: 0.4 }),
       water: new Material({ color: [0.85, 1.0, 0.92, 1.0], texture: texWater, specularShininess: 90, specularIntensity: 0.9 }),
       waterJet: new Material({ color: [0.95, 0.98, 1.0, 0.9], specularShininess: 96, specularIntensity: 0.95 }),
       pavement: new Material({ color: [0.95, 0.95, 0.95, 1.0], texture: texPave, specularShininess: 8, specularIntensity: 0.1 }),
@@ -171,6 +175,10 @@ class App {
     this.flagPole = new FlagPole(gl, mats);
     this.flagPole.setPosition(0, 0, -1.8);
     this.sceneRoot.addChild(this.flagPole);
+
+    // 5. Mobil Sedan Hitam Berkeliling Jalan
+    this.sedanCar = new SedanCar(gl, mats);
+    this.sceneRoot.addChild(this.sedanCar);
   }
 
   initCamera() {
@@ -226,6 +234,65 @@ class App {
         this.camera.setPreset('top-down');
       });
     }
+
+    const btnFullscreen = document.getElementById('btn-fullscreen');
+    if (btnFullscreen) {
+      btnFullscreen.addEventListener('click', () => {
+        this.toggleFullScreen();
+      });
+    }
+
+    document.addEventListener('fullscreenchange', () => this.handleResize());
+    document.addEventListener('webkitfullscreenchange', () => this.handleResize());
+    document.addEventListener('msfullscreenchange', () => this.handleResize());
+    window.addEventListener('resize', () => this.handleResize());
+  }
+
+  // Method untuk handle resize canvas saat masuk/keluar full screen
+  handleResize() {
+    const canvas = this.canvas;
+    const displayWidth = canvas.clientWidth;
+    const displayHeight = canvas.clientHeight;
+
+    // Cek jika ukuran buffer canvas berbeda dengan ukuran display aktual
+    if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+      canvas.width = displayWidth;
+      canvas.height = displayHeight;
+      
+      // Update viewport WebGL sesuai ukuran baru
+      this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+      
+      // Jika menggunakan kamera perspektif yang bergantung pada aspect ratio, update di sini jika perlu
+      if (this.camera && typeof this.camera.updateAspectRatio === 'function') {
+        this.camera.updateAspectRatio(displayWidth / displayHeight);
+      }
+    }
+  }
+
+  // Method untuk handle full screen overlay
+  toggleFullScreen() {
+    const cardCanvas = document.querySelector('.canvas-card');
+    if (!cardCanvas) return;
+
+    if (!document.fullscreenElement) {
+      // Masuk ke mode full screen pada elemen card canvas
+      if (cardCanvas.requestFullscreen) {
+        cardCanvas.requestFullscreen();
+      } else if (cardCanvas.webkitRequestFullscreen) {
+        cardCanvas.webkitRequestFullscreen();
+      } else if (cardCanvas.msRequestFullscreen) {
+        cardCanvas.msRequestFullscreen();
+      }
+    } else {
+      // Keluar dari full screen
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    }
   }
 
   updateLighting() {
@@ -260,6 +327,12 @@ class App {
       // Update animasi pada objek hierarki
       if (this.flagPole) this.flagPole.animate(this.elapsedTime);
       if (this.fountain) this.fountain.animate(this.elapsedTime);
+      if (this.sedanCar) this.sedanCar.animate(this.elapsedTime, deltaTime);
+    }
+
+    const spanEye = document.getElementById('cam-eye');
+    if (spanEye && this.camera && this.camera.eye) {
+      spanEye.textContent = `[${this.camera.eye[0].toFixed(2)}, ${this.camera.eye[1].toFixed(2)}, ${this.camera.eye[2].toFixed(2)}]`;
     }
 
     // Clear Canvas

@@ -260,6 +260,47 @@ class GeometryFactory {
       indices.push(i2, i1, i3);
     }
 
+    // 2. TUTUP ATAS SILINDER (Top Cap) agar tidak kopong
+    const topCenterIdx = positions.length / 3;
+    positions.push(0, halfH, 0);
+    normals.push(0, 1, 0);
+    texCoords.push(0.5, 0.5);
+
+    for (let i = 0; i <= segments; i++) {
+      const theta = (i / segments) * 2 * Math.PI;
+      const px = radius * Math.cos(theta);
+      const pz = radius * Math.sin(theta);
+
+      positions.push(px, halfH, pz);
+      normals.push(0, 1, 0);
+      texCoords.push(0.5 + 0.5 * Math.cos(theta), 0.5 + 0.5 * Math.sin(theta));
+    }
+
+    for (let i = 0; i < segments; i++) {
+      indices.push(topCenterIdx, topCenterIdx + 1 + i, topCenterIdx + 2 + i);
+    }
+
+    // 3. TUTUP BAWAH SILINDER (Bottom Cap) agar tidak kopong
+    const botCenterIdx = positions.length / 3;
+    positions.push(0, -halfH, 0);
+    normals.push(0, -1, 0);
+    texCoords.push(0.5, 0.5);
+
+    for (let i = 0; i <= segments; i++) {
+      const theta = (i / segments) * 2 * Math.PI;
+      const px = radius * Math.cos(theta);
+      const pz = radius * Math.sin(theta);
+
+      positions.push(px, -halfH, pz);
+      normals.push(0, -1, 0);
+      texCoords.push(0.5 + 0.5 * Math.cos(theta), 0.5 + 0.5 * Math.sin(theta));
+    }
+
+    for (let i = 0; i < segments; i++) {
+      // Dibalik urutannya agar normal menghadap ke bawah dengan benar
+      indices.push(botCenterIdx, botCenterIdx + 2 + i, botCenterIdx + 1 + i);
+    }
+
     return new Geometry(gl, positions, normals, texCoords, indices);
   }
 
